@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil - EliteKits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md sticky top-0 z-50 mb-8">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+            <a href="index.html" class="text-2xl font-bold text-blue-900">ELITE<span class="text-blue-600">KITS</span></a>
+            <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Accueil</a>
+        </div>
+    </nav>
+    <div class="max-w-3xl mx-auto px-4 py-8 bg-white rounded-lg shadow">
+        <h1 class="text-3xl font-bold mb-8 text-center">Mon Profil</h1>
+        <div id="user-info" class="mb-8"></div>
+        <h2 class="text-xl font-semibold mb-4">Historique des commandes</h2>
+        <div id="historique-container"></div>
+    </div>
+    <script>
+function getUserKey() {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    return user && user.email ? user.email : 'default';
+}
+
+function renderUserInfo() {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const photo = localStorage.getItem('photo_profil_' + getUserKey());
+    let html = `
+        <div class="flex items-center mb-6">
+            <label class="relative cursor-pointer">
+                <img src="${photo ? photo : 'https://ui-avatars.com/api/?name=User'}" alt="Photo de profil" class="w-20 h-20 rounded-full object-cover border-2 border-blue-400">
+                <input type="file" id="photo-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                <span class="absolute bottom-0 right-0 bg-blue-600 text-white text-xs px-2 py-1 rounded">Changer</span>
+            </label>
+            <div class="ml-6">
+                <div class="font-bold text-lg">${user?.nom || 'Nom inconnu'}</div>
+                <div class="text-gray-600">${user?.email || 'Email non renseigné'}</div>
+                <div class="text-gray-600">${user?.tel ? 'Téléphone : ' + user.tel : ''}</div>
+                <div class="text-gray-600">${user?.ville ? 'Ville : ' + user.ville : ''}</div>
+            </div>
+        </div>
+    `;
+    document.getElementById('user-info').innerHTML = html;
+
+    // Gestion upload photo
+    document.getElementById('photo-input').onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            localStorage.setItem('photo_profil_' + getUserKey(), evt.target.result);
+            renderUserInfo();
+        };
+        reader.readAsDataURL(file);
+    };
+}
+
+function renderHistorique() {
+    const historique = JSON.parse(localStorage.getItem('historique_commandes_' + getUserKey()) || '[]');
+    const container = document.getElementById('historique-container');
+    if (historique.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 text-center">Aucune commande passée pour le moment.</p>';
+        return;
+    }
+    container.innerHTML = historique.reverse().map(cmd => `
+        <div class="border rounded p-4 mb-4 bg-gray-50">
+            <div class="mb-2 text-sm text-gray-600">Commande n° <span class="font-mono">${cmd.id}</span> — ${cmd.date}</div>
+            <div class="mb-2">Opérateur : <b>${cmd.operateur}</b> | Téléphone : <b>${cmd.tel}</b> | Ville : <b>${cmd.ville}</b></div>
+            <table class="w-full text-sm mb-2">
+                <thead><tr><th>Produit</th><th>Qté</th><th>Prix</th></tr></thead>
+                <tbody>
+                    ${cmd.produits.map(p => `
+                        <tr>
+                            <td>${p.nom}</td>
+                            <td class="text-center">${p.qty}</td>
+                            <td>${p.prix}€</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <div class="text-right font-bold">Total : ${cmd.total.toFixed(2)}€</div>
+        </div>
+    `).join('');
+}
+
+renderUserInfo();
+renderHistorique();
+    </script>
+</body>
+</html>

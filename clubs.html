@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs - EliteKits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation (copie la même que sur index.html) -->
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-blue-900">ELITE<span class="text-blue-600">KITS</span></a>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium">Accueil</a>
+                    <a href="nouveautes.html" class="text-gray-700 hover:text-blue-600 font-medium">Nouveautés</a>
+                    <a href="clubs.html" class="text-gray-700 hover:text-blue-600 font-medium">Clubs</a>
+                    <a href="selection.html" class="text-gray-700 hover:text-blue-600 font-medium">Selections</a>
+                    <a href="collection.html" class="text-gray-700 hover:text-blue-600 font-medium">Collections</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="text-gray-700 hover:text-blue-600 relative">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    <button class="md:hidden text-gray-700">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Clubs <span class="text-blue-600">2024</span></h1>
+            <center><p style="padding-bottom: 30px;"><strong><a href="index.html">Retour a l'accueil</a></strong></p></center>
+            <!-- Sélecteur de ligue -->
+            <div class="flex justify-center mb-8">
+                <select id="ligue-select" class="border border-gray-300 rounded px-4 py-2">
+                    <option value="ligue1">Ligue 1</option>
+                    <option value="premierleague">Premier League</option>
+                    <option value="seriea">Serie A</option>
+                    <option value="laliga">La Liga</option>
+                    <option value="bundesliga">Bundesliga</option>
+                </select>
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="flex justify-center mb-8">
+                <input id="search-club" type="text" placeholder="Rechercher un club..." class="border border-gray-300 rounded px-4 py-2 w-full max-w-md">
+            </div>
+
+            <!-- Grille de clubs -->
+            <div id="clubs-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Clubs Ligue 1 -->
+                <a href="club.html?club=psg" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Paris Saint-Germain</div>
+                </a>
+                <a href="club.html?club=om" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Olympique de Marseille</div>
+                </a>
+                <a href="club.html?club=ol" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Olympique Lyonnais</div>
+                </a>
+                <a href="club.html?club=asse" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">AS Saint-Etienne</div>
+                </a>
+                <a href="club.html?club=nantes" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Nantes F.C</div>
+                </a>
+                <a href="club.html?club=tfc" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Toulouse F.C</div>
+                </a>
+                <a href="club.html?club=lille" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Lille</div>
+                </a>
+                <a href="club.html?club=montpellier" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Montpellier</div>
+                </a>
+                <a href="club.html?club=asm" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">AS Monaco</div>
+                </a>
+                <a href="club.html?club=stras" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
+                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Strasbourg</div>
+                </a>
+
+                <!-- Clubs Premier League -->
+                <a href="club.html?club=arsenal" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" alt="Arsenal" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Arsenal</div>
+                </a>
+                <a href="club.html?club=chelsea" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Chelsea</div>
+                </a>
+                <a href="club.html?club=mancity" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Manchesster City</div>
+                </a>
+                <a href="club.html?club=manu" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Manchester United</div>
+                </a>
+                <a href="club.html?club=liverpool" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Liverpool F.C</div>
+                </a>
+                <a href="club.html?club=avl" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Aston Villa</div>
+                </a>
+                <a href="club.html?club=spurs" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Tothenam</div>
+                </a>
+                <!-- Ajoute d'autres clubs pour chaque ligue -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // Simple JS pour filtrer les clubs selon la ligue choisie
+    document.getElementById('ligue-select').addEventListener('change', function() {
+        const ligue = this.value;
+        document.querySelectorAll('#clubs-container > a').forEach(card => {
+            card.classList.toggle('hidden', card.getAttribute('data-ligue') !== ligue);
+        });
+    });
+    // Affiche la première ligue par défaut
+    document.getElementById('ligue-select').dispatchEvent(new Event('change'));
+    </script>
+
+    <!-- ...existing code... -->
+<script>
+document.getElementById('ligue-select').addEventListener('change', function() {
+    const ligue = this.value;
+    document.querySelectorAll('#clubs-container > a').forEach(card => {
+        card.classList.toggle('hidden', card.getAttribute('data-ligue') !== ligue);
+    });
+    // Réinitialise la recherche à chaque changement de ligue
+    document.getElementById('search-club').value = '';
+});
+document.getElementById('ligue-select').dispatchEvent(new Event('change'));
+
+// Barre de recherche clubs
+document.getElementById('search-club').addEventListener('input', function() {
+    const search = this.value.toLowerCase();
+    const ligue = document.getElementById('ligue-select').value;
+    document.querySelectorAll('#clubs-container > a').forEach(card => {
+        const clubName = card.textContent.toLowerCase();
+        const isLigue = card.getAttribute('data-ligue') === ligue;
+        card.classList.toggle('hidden', !isLigue || !clubName.includes(search));
+    });
+});
+</script>
+<!-- ...existing code... -->
+
+    <!-- Footer (copie la même que sur index.html) -->
+    <footer class="bg-gray-900 text-gray-300 py-10 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+            <a href="#" class="text-2xl font-bold text-white">ELITE<span class="text-blue-600">KITS</span></a>
+            <p class="mt-4 text-gray-400 text-sm">Maillots officiels & répliques premium. Livraison rapide, retours gratuits.</p>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-4">Liens rapides</h4>
+            <ul class="space-y-2">
+                <li><a href="#" class="hover:text-blue-400">Accueil</a></li>
+                <li><a href="#" class="hover:text-blue-400">Nouveautés</a></li>
+                <li><a href="#" class="hover:text-blue-400">Clubs</a></li>
+                <li><a href="#" class="hover:text-blue-400">Sélections</a></li>
+                <li><a href="#" class="hover:text-blue-400">Collections</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-4">Aide</h4>
+            <ul class="space-y-2">
+                <li><a href="#" class="hover:text-blue-400">FAQ</a></li>
+                <li><a href="#" class="hover:text-blue-400">Livraison</a></li>
+                <li><a href="#" class="hover:text-blue-400">Retours</a></li>
+                <li><a href="#" class="hover:text-blue-400">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-4">Suivez-nous</h4>
+            <div class="flex space-x-4">
+                <a href="#" class="text-xl hover:text-blue-400"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-xl hover:text-blue-400"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-xl hover:text-blue-400"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-xl hover:text-blue-400"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="mt-8 text-center text-gray-500 text-sm">
+        &copy; 2025 EliteKits. Tous droits réservés.
+    </div>
+</footer>
+
+</body>
+</html>

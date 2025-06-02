@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maillots du club</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 id="club-title" class="text-3xl font-bold text-gray-900 mb-8"></h1>
+        <div id="maillots-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        <div class="mt-8">
+            <a href="clubs.html" class="text-blue-600 hover:underline">&larr; Retour aux clubs</a>
+        </div>
+    </div>
+    <script>
+    // 1. Liste des maillots par club
+    const maillots = {
+        psg: [
+            { nom: "PSG Domicile 2024", img: "ASSETS/img/psg_home.png", prix: "89,99€" },
+            { nom: "PSG Extérieur 2024", img: "ASSETS/img/psg_away.png", prix: "89,99€" },
+            { nom: "PSG Third 2024", img: "ASSETS/img/psg_third.png", prix: "89,99€" }
+        ],
+        om: [
+            { nom: "OM Domicile 2024", img: "ASSETS/img/om_home.png", prix: "84,99€" },
+            { nom: "OM Extérieur 2024", img: "ASSETS/img/om_away.png", prix: "84,99€" }
+        ],
+        arsenal: [
+            { nom: "Arsenal Home 2024", img: "ASSETS/img/arsenal_home.png", prix: "89,99€" },
+            { nom: "Arsenal Away 2024", img: "ASSETS/img/arsenal_away.png", prix: "89,99€" }
+        ],
+        chelsea: [
+            { nom: "Chelsea Home 2024", img: "ASSETS/img/chelsea_home.png", prix: "89,99€" },
+            { nom: "Chelsea Away 2024", img: "ASSETS/img/chelsea_away.png", prix: "89,99€" }
+        ]
+        // Ajoute d'autres clubs ici
+    };
+
+    // 2. Récupère le club dans l'URL
+    function getClubFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('club');
+    }
+
+    // 3. Affiche les maillots du club
+    function afficherMaillots() {
+        const club = getClubFromURL();
+        const container = document.getElementById('maillots-container');
+        const title = document.getElementById('club-title');
+        if (!club || !maillots[club]) {
+            title.textContent = "Club non trouvé";
+            container.innerHTML = "<p>Aucun maillot à afficher.</p>";
+            return;
+        }
+        // Affiche le nom du club
+        const clubNames = { psg: "Paris Saint-Germain", om: "Olympique de Marseille", arsenal: "Arsenal", chelsea: "Chelsea" };
+        title.textContent = "Maillots du " + (clubNames[club] || club);
+        // Affiche les maillots
+        container.innerHTML = maillots[club].map(m =>
+            `<div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="${m.img}" alt="${m.nom}" class="w-full h-56 object-contain p-4">
+                <div class="p-4">
+                    <div class="font-bold text-gray-900 mb-2">${m.nom}</div>
+                    <div class="text-blue-600 font-bold mb-4">${m.prix}</div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full">Ajouter au panier</button>
+                </div>
+            </div>`
+        ).join('');
+    }
+
+    afficherMaillots();
+    </script>
+</body>
+</html>

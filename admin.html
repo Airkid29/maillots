@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - EliteKits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4 py-8 bg-white rounded-lg shadow">
+        <h1 class="text-3xl font-bold mb-8 text-center">Tableau de bord Administrateur</h1>
+        <div id="admin-orders"></div>
+    </div>
+    <script>
+    // Récupère toutes les commandes de tous les utilisateurs
+    function getAllOrders() {
+        let orders = [];
+        for (let key in localStorage) {
+            if (key.startsWith('historique_commandes_')) {
+                let userOrders = JSON.parse(localStorage.getItem(key) || '[]');
+                userOrders.forEach(cmd => {
+                    cmd.userKey = key.replace('historique_commandes_', '');
+                    orders.push(cmd);
+                });
+            }
+        }
+        return orders.sort((a, b) => b.id - a.id);
+    }
+
+    function renderAdminOrders() {
+        const orders = getAllOrders();
+        const container = document.getElementById('admin-orders');
+        if (orders.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center">Aucune commande trouvée.</p>';
+            return;
+        }
+        container.innerHTML = orders.map(cmd => `
+            <div class="border rounded p-4 mb-4 bg-gray-50">
+                <div class="mb-2 text-sm text-gray-600">Commande n° <span class="font-mono">${cmd.id}</span> — ${cmd.date}</div>
+                <div class="mb-2">Client : <b>${cmd.userKey}</b> | Opérateur : <b>${cmd.operateur}</b> | Téléphone : <b>${cmd.tel}</b> | Ville : <b>${cmd.ville}</b></div>
+                <table class="w-full text-sm mb-2">
+                    <thead><tr><th>Produit</th><th>Qté</th><th>Prix</th></tr></thead>
+                    <tbody>
+                        ${cmd.produits.map(p => `
+                            <tr>
+                                <td>${p.nom}</td>
+                                <td class="text-center">${p.qty}</td>
+                                <td>${p.prix}€</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="text-right font-bold">Total : ${cmd.total.toFixed(2)}€</div>
+            </div>
+        `).join('');
+    }
+
+    renderAdminOrders();
+    </script>
+</body>
+</html>
