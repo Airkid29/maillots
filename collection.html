@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Collections Spéciales - EliteKits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">Collections Spéciales</h1>
+        <div class="mb-8 flex flex-wrap gap-4 justify-center">
+            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-semibold">Éditions limitées</span>
+            <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full font-semibold">Maillots rétro</span>
+            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">Collaborations</span>
+        </div>
+        <div id="collection-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        <div class="mt-8 text-center">
+            <a href="index.html" class="text-blue-600 hover:underline">&larr; Retour à l'accueil</a>
+        </div>
+    </div>
+    <script>
+    // Liste des maillots de collections spéciales
+    const collections = [
+        // Éditions limitées
+        { nom: "PSG x Jordan 2024 Edition Limitée", img: "ASSETS/img/psgxjordan.jpeg", prix: "129,99€", type: "Éditions limitées" },
+        { nom: "Barça Senyera 2024", img: "ASSETS/img/collec barca.jpeg", prix: "119,99€", type: "Éditions limitées" },
+        // Maillots rétro
+        { nom: "France 98 Rétro", img: "ASSETS/img/france 98.jpeg", prix: "89,99€", type: "Maillots rétro" },
+        { nom: "Nigeria 94 Rétro", img: "ASSETS/img/collec nigeria.jpeg", prix: "89,99€", type: "Maillots rétro" },
+        // Collaborations
+        { nom: "Arsenal x Adidas Originals", img: "ASSETS/img/collec arsenal.jpeg", prix: "139,99€", type: "Collaborations" },
+        { nom: "Juventus x Palace", img: "ASSETS/img/collec juve.jpeg", prix: "139,99€", type: "Collaborations" }
+    ];
+
+    function afficherCollections() {
+        const container = document.getElementById('collection-container');
+        container.innerHTML = collections.map((m, idx) =>
+            `<div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                <img src="${m.img}" alt="${m.nom}" class="w-full h-56 object-contain p-4 bg-gray-100">
+                <div class="p-4 flex-1 flex flex-col">
+                    <div class="font-bold text-gray-900 mb-2">${m.nom}</div>
+                    <div class="text-xs mb-2"><span class="px-2 py-1 rounded bg-gray-200">${m.type}</span></div>
+                    <div class="text-blue-600 font-bold mb-4">${m.prix}</div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full add-to-cart mt-auto" data-idx="${idx}">Ajouter au panier</button>
+                </div>
+            </div>`
+        ).join('');
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.onclick = function() {
+                const idx = this.getAttribute('data-idx');
+                const produit = collections[idx];
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const exist = cart.find(item => item.nom === produit.nom);
+                if (exist) {
+                    exist.qty = (exist.qty || 1) + 1;
+                } else {
+                    cart.push({ ...produit, qty: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                // Feedback visuel
+                this.textContent = "Ajouté !";
+                this.disabled = true;
+                setTimeout(() => {
+                    this.textContent = "Ajouter au panier";
+                    this.disabled = false;
+                }, 1200);
+            }
+        });
+    }
+
+    afficherCollections();
+    </script>
+</body>
+</html>

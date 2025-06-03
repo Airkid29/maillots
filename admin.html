@@ -6,55 +6,298 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
-    <div class="max-w-5xl mx-auto px-4 py-8 bg-white rounded-lg shadow">
-        <h1 class="text-3xl font-bold mb-8 text-center">Tableau de bord Administrateur</h1>
-        <div id="admin-orders"></div>
-    </div>
-    <script>
-    // Récupère toutes les commandes de tous les utilisateurs
-    function getAllOrders() {
-        let orders = [];
-        for (let key in localStorage) {
-            if (key.startsWith('historique_commandes_')) {
-                let userOrders = JSON.parse(localStorage.getItem(key) || '[]');
-                userOrders.forEach(cmd => {
-                    cmd.userKey = key.replace('historique_commandes_', '');
-                    orders.push(cmd);
-                });
-            }
-        }
-        return orders.sort((a, b) => b.id - a.id);
-    }
+<div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-blue-900 text-white flex flex-col py-8 px-4">
+        <div class="text-2xl font-bold mb-8 text-center">Admin EliteKits</div>
+        <nav class="flex-1 flex flex-col gap-4">
+            <button class="nav-btn text-left px-3 py-2 rounded hover:bg-blue-800" data-section="dashboard">Commandes</button>
+            <button class="nav-btn text-left px-3 py-2 rounded hover:bg-blue-800" data-section="users">Utilisateurs</button>
+            <button class="nav-btn text-left px-3 py-2 rounded hover:bg-blue-800" data-section="products">Maillots</button>
+        </nav>
+        <button onclick="logoutAdmin()" class="mt-8 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">Déconnexion</button>
+    </aside>
+    <!-- Main content -->
+    <main class="flex-1 p-8 bg-white" id="admin-content"></main>
+</div>
+<script>
+const ADMIN_EMAIL = "admin@elitekits.com";
+const ADMIN_PASS = "admin123";
 
-    function renderAdminOrders() {
-        const orders = getAllOrders();
-        const container = document.getElementById('admin-orders');
-        if (orders.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 text-center">Aucune commande trouvée.</p>';
-            return;
+// --- AUTH ---
+function isAdminLogged() {
+    return sessionStorage.getItem('admin_logged') === '1';
+}
+function showLoginForm() {
+    document.body.innerHTML = `
+        <div class="flex items-center justify-center min-h-screen bg-gray-50">
+            <form id="admin-login" class="max-w-sm mx-auto bg-white p-8 rounded shadow">
+                <h2 class="text-xl font-bold mb-4 text-center">Connexion Admin</h2>
+                <div class="margin-left:50px"><a href="index.html" class="text-blue-600 hover:underline">&larr; Continuer mes achats</a></div> <br>
+                <input type="email" name="email" required placeholder="Email admin" class="mb-3 w-full border rounded px-3 py-2">
+                <input type="password" name="pass" required placeholder="Mot de passe" class="mb-4 w-full border rounded px-3 py-2">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">Se connecter</button>
+            </form>
+        </div>
+    `;
+    document.getElementById('admin-login').onsubmit = function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(this).entries());
+        if (data.email === ADMIN_EMAIL && data.pass === ADMIN_PASS) {
+            sessionStorage.setItem('admin_logged', '1');
+            location.reload();
+        } else {
+            alert("Identifiants incorrects.");
         }
-        container.innerHTML = orders.map(cmd => `
-            <div class="border rounded p-4 mb-4 bg-gray-50">
-                <div class="mb-2 text-sm text-gray-600">Commande n° <span class="font-mono">${cmd.id}</span> — ${cmd.date}</div>
-                <div class="mb-2">Client : <b>${cmd.userKey}</b> | Opérateur : <b>${cmd.operateur}</b> | Téléphone : <b>${cmd.tel}</b> | Ville : <b>${cmd.ville}</b></div>
-                <table class="w-full text-sm mb-2">
-                    <thead><tr><th>Produit</th><th>Qté</th><th>Prix</th></tr></thead>
-                    <tbody>
-                        ${cmd.produits.map(p => `
-                            <tr>
-                                <td>${p.nom}</td>
-                                <td class="text-center">${p.qty}</td>
-                                <td>${p.prix}€</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <div class="text-right font-bold">Total : ${cmd.total.toFixed(2)}€</div>
+    }
+}
+window.logoutAdmin = function() {
+    sessionStorage.removeItem('admin_logged');
+    location.reload();
+}
+
+// --- NAVIGATION ---
+function setActiveSection(section) {
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('bg-blue-800', btn.dataset.section === section);
+    });
+    if (section === "dashboard") renderDashboard();
+    if (section === "users") renderUsers();
+    if (section === "products") renderProducts();
+}
+document.addEventListener('DOMContentLoaded', () => {
+    if (!isAdminLogged()) { showLoginForm(); return; }
+    setActiveSection("dashboard");
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.onclick = () => setActiveSection(btn.dataset.section);
+    });
+});
+
+// --- COMMANDES ---
+function getAllOrders() {
+    let orders = [];
+    for (let key in localStorage) {
+        if (key.startsWith('historique_commandes_')) {
+            let userOrders = JSON.parse(localStorage.getItem(key) || '[]');
+            userOrders.forEach(cmd => {
+                cmd.userKey = key.replace('historique_commandes_', '');
+                cmd._storageKey = key;
+                cmd.status = cmd.status || "Nouveau";
+                orders.push(cmd);
+            });
+        }
+    }
+    return orders.sort((a, b) => b.id - a.id);
+}
+function saveOrderStatus(cmd, newStatus) {
+    let userOrders = JSON.parse(localStorage.getItem(cmd._storageKey) || '[]');
+    let idx = userOrders.findIndex(c => c.id === cmd.id);
+    if (idx !== -1) {
+        userOrders[idx].status = newStatus;
+        localStorage.setItem(cmd._storageKey, JSON.stringify(userOrders));
+    }
+}
+function deleteOrder(cmd) {
+    let userOrders = JSON.parse(localStorage.getItem(cmd._storageKey) || '[]');
+    userOrders = userOrders.filter(c => c.id !== cmd.id);
+    localStorage.setItem(cmd._storageKey, JSON.stringify(userOrders));
+}
+function renderDashboard() {
+    const orders = getAllOrders();
+    let statusFilter = sessionStorage.getItem('admin_status_filter') || "Tous";
+    let filteredOrders = statusFilter === "Tous" ? orders : orders.filter(o => (o.status || "Nouveau") === statusFilter);
+    document.getElementById('admin-content').innerHTML = `
+        <div class="flex justify-between items-center mb-6">
+            <div class="font-bold text-xl">Commandes</div>
+            <div>
+                <label class="mr-2 font-medium">Filtrer :</label>
+                <select id="status-filter" class="border rounded px-2 py-1">
+                    <option${statusFilter==="Tous"?" selected":""}>Tous</option>
+                    <option${statusFilter==="Nouveau"?" selected":""}>Nouveau</option>
+                    <option${statusFilter==="Traité"?" selected":""}>Traité</option>
+                    <option${statusFilter==="Livré"?" selected":""}>Livré</option>
+                </select>
             </div>
-        `).join('');
+        </div>
+        <div>
+            ${filteredOrders.length === 0 ? `<p class="text-gray-500 text-center">Aucune commande trouvée.</p>` :
+            filteredOrders.map(cmd => `
+                <div class="border rounded p-4 mb-4 bg-gray-50 relative">
+                    <div class="absolute top-2 right-2">
+                        <span class="inline-block px-2 py-1 rounded text-xs font-bold
+                            ${cmd.status==="Nouveau"?"bg-yellow-200 text-yellow-800":
+                              cmd.status==="Traité"?"bg-blue-200 text-blue-800":
+                              "bg-green-200 text-green-800"}">
+                            ${cmd.status || "Nouveau"}
+                        </span>
+                    </div>
+                    <div class="mb-2 text-sm text-gray-600">Commande n° <span class="font-mono">${cmd.id}</span> — ${cmd.date}</div>
+                    <div class="mb-2">Client : <b>${cmd.userKey}</b> | Opérateur : <b>${cmd.operateur}</b> | Téléphone : <b>${cmd.tel}</b> | Ville : <b>${cmd.ville}</b></div>
+                    <table class="w-full text-sm mb-2">
+                        <thead><tr><th>Produit</th><th>Qté</th><th>Prix</th></tr></thead>
+                        <tbody>
+                            ${cmd.produits.map(p => `
+                                <tr>
+                                    <td>${p.nom}</td>
+                                    <td class="text-center">${p.qty}</td>
+                                    <td>${p.prix}€</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="text-right font-bold mb-2">Total : ${cmd.total.toFixed(2)}€</div>
+                    <div class="flex flex-wrap gap-2">
+                        ${cmd.status !== "Traité" ? `<button onclick="markStatus(${cmd.id},'Traité')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">Marquer traité</button>` : ""}
+                        ${cmd.status !== "Livré" ? `<button onclick="markStatus(${cmd.id},'Livré')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">Marquer livré</button>` : ""}
+                        <button onclick="deleteOrderAdmin(${cmd.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Supprimer</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    document.getElementById('status-filter').onchange = function() {
+        sessionStorage.setItem('admin_status_filter', this.value);
+        renderDashboard();
+    };
+}
+window.markStatus = function(cmdId, status) {
+    const orders = getAllOrders();
+    const cmd = orders.find(c => c.id === cmdId);
+    if (cmd) {
+        saveOrderStatus(cmd, status);
+        renderDashboard();
     }
+}
+window.deleteOrderAdmin = function(cmdId) {
+    if (!confirm("Supprimer cette commande ?")) return;
+    const orders = getAllOrders();
+    const cmd = orders.find(c => c.id === cmdId);
+    if (cmd) {
+        deleteOrder(cmd);
+        renderDashboard();
+    }
+}
 
-    renderAdminOrders();
-    </script>
+// --- UTILISATEURS ---
+function getAllUsers() {
+    // Suppose que chaque user est stocké dans un tableau "users" dans localStorage
+    return JSON.parse(localStorage.getItem('users') || '[]');
+}
+function deleteUser(email) {
+    let users = getAllUsers().filter(u => u.email !== email);
+    localStorage.setItem('users', JSON.stringify(users));
+    // Supprime aussi historique commandes et photo profil
+    localStorage.removeItem('historique_commandes_' + email);
+    localStorage.removeItem('photo_profil_' + email);
+    renderUsers();
+}
+function renderUsers() {
+    const users = getAllUsers();
+    document.getElementById('admin-content').innerHTML = `
+        <div class="font-bold text-xl mb-6">Utilisateurs</div>
+        <div>
+            ${users.length === 0 ? `<p class="text-gray-500 text-center">Aucun utilisateur trouvé.</p>` :
+            users.map(u => `
+                <div class="border rounded p-4 mb-4 bg-gray-50 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold">${u.nom || ''}</div>
+                        <div class="text-gray-600">${u.email}</div>
+                        <div class="text-gray-600">${u.tel ? 'Téléphone : ' + u.tel : ''}</div>
+                        <div class="text-gray-600">${u.ville ? 'Ville : ' + u.ville : ''}</div>
+                    </div>
+                    <button onclick="deleteUserAdmin('${u.email}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Supprimer</button>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+window.deleteUserAdmin = deleteUser;
+
+// --- MAILLOTS (produits) ---
+// Pour la démo, on gère un tableau "products" dans localStorage
+function getAllProducts() {
+    return JSON.parse(localStorage.getItem('products') || '[]');
+}
+function saveProducts(products) {
+    localStorage.setItem('products', JSON.stringify(products));
+}
+function renderProducts() {
+    const products = getAllProducts();
+    document.getElementById('admin-content').innerHTML = `
+        <div class="flex justify-between items-center mb-6">
+            <div class="font-bold text-xl">Gestion des maillots</div>
+            <button onclick="showAddProductForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">Ajouter un maillot</button>
+        </div>
+        <div>
+            ${products.length === 0 ? `<p class="text-gray-500 text-center">Aucun maillot trouvé.</p>` :
+            products.map((p, idx) => `
+                <div class="border rounded p-4 mb-4 bg-gray-50 flex flex-col sm:flex-row justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <img src="${p.img}" alt="${p.nom}" class="w-20 h-20 object-contain rounded border">
+                        <div>
+                            <div class="font-bold">${p.nom}</div>
+                            <div class="text-gray-600">${p.type || p.competition || ''}</div>
+                            <div class="text-blue-600 font-bold">${p.prix}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-4 sm:mt-0">
+                        <button onclick="showEditProductForm(${idx})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Modifier</button>
+                        <button onclick="deleteProductAdmin(${idx})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Supprimer</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+window.deleteProductAdmin = function(idx) {
+    let products = getAllProducts();
+    products.splice(idx, 1);
+    saveProducts(products);
+    renderProducts();
+}
+window.showAddProductForm = function() {
+    document.getElementById('admin-content').innerHTML = `
+        <div class="font-bold text-xl mb-6">Ajouter un maillot</div>
+        <form id="add-product-form" class="max-w-lg mx-auto bg-gray-50 p-6 rounded shadow">
+            <input name="nom" required placeholder="Nom du maillot" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="img" required placeholder="URL de l'image" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="prix" required placeholder="Prix (ex: 99,99€)" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="type" placeholder="Type/Compétition (optionnel)" class="mb-3 w-full border rounded px-3 py-2">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">Ajouter</button>
+            <button type="button" onclick="renderProducts()" class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">Annuler</button>
+        </form>
+    `;
+    document.getElementById('add-product-form').onsubmit = function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(this).entries());
+        let products = getAllProducts();
+        products.push(data);
+        saveProducts(products);
+        renderProducts();
+    }
+}
+window.showEditProductForm = function(idx) {
+    const p = getAllProducts()[idx];
+    document.getElementById('admin-content').innerHTML = `
+        <div class="font-bold text-xl mb-6">Modifier le maillot</div>
+        <form id="edit-product-form" class="max-w-lg mx-auto bg-gray-50 p-6 rounded shadow">
+            <input name="nom" required placeholder="Nom du maillot" value="${p.nom}" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="img" required placeholder="URL de l'image" value="${p.img}" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="prix" required placeholder="Prix (ex: 99,99€)" value="${p.prix}" class="mb-3 w-full border rounded px-3 py-2">
+            <input name="type" placeholder="Type/Compétition (optionnel)" value="${p.type || ''}" class="mb-3 w-full border rounded px-3 py-2">
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded w-full">Enregistrer</button>
+            <button type="button" onclick="renderProducts()" class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">Annuler</button>
+        </form>
+    `;
+    document.getElementById('edit-product-form').onsubmit = function(e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(this).entries());
+        let products = getAllProducts();
+        products[idx] = data;
+        saveProducts(products);
+        renderProducts();
+    }
+}
+</script>
 </body>
 </html>

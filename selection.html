@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sélection Équipes Nationales - EliteKits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">Sélection Équipes Nationales</h1>
+        <div class="mb-8 flex flex-wrap gap-4 justify-center">
+            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">EURO 2024</span>
+            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">CAN 2024</span>
+            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">Copa America 2024</span>
+        </div>
+        <div id="selection-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        <div class="mt-8 text-center">
+            <a href="index.html" class="text-blue-600 hover:underline">&larr; Retour à l'accueil</a>
+        </div>
+    </div>
+    <script>
+    // Liste des maillots nationaux pour les grandes compétitions
+    const selection = [
+        // EURO 2024
+        { nom: "France Domicile EURO 2024", img: "ASSETS/img/france1.jpeg", prix: "99,99€", competition: "EURO 2024" },
+        { nom: "Allemagne Domicile EURO 2024", img: "ASSETS/img/allemagne1.jpeg", prix: "99,99€", competition: "EURO 2024" },
+        { nom: "Espagne Domicile EURO 2024", img: "ASSETS/img/espagne1.jpeg", prix: "99,99€", competition: "EURO 2024" },
+        { nom: "Portugal Domicile EURO 2024", img: "ASSETS/img/portugal1.jpeg", prix: "99,99€", competition: "EURO 2024" },
+        // CAN 2024
+        { nom: "Côte d'Ivoire Domicile CAN 2024", img: "ASSETS/img/civ1.jpeg", prix: "94,99€", competition: "CAN 2024" },
+        { nom: "Sénégal Domicile CAN 2024", img: "ASSETS/img/senegal1.jpeg", prix: "94,99€", competition: "CAN 2024" },
+        { nom: "Cameroun Domicile CAN 2024", img: "ASSETS/img/nigeria1.jpeg", prix: "94,99€", competition: "CAN 2024" },
+        { nom: "Maroc Domicile CAN 2024", img: "ASSETS/img/maroc1.jpeg", prix: "94,99€", competition: "CAN 2024" },
+        // Copa America 2024
+        { nom: "Argentine Domicile Copa America 2024", img: "ASSETS/img/argentine1.jpeg", prix: "99,99€", competition: "Copa America 2024" },
+        { nom: "Brésil Domicile Copa America 2024", img: "ASSETS/img/bresil1.jpeg", prix: "99,99€", competition: "Copa America 2024" },
+        { nom: "Uruguay Domicile Copa America 2024", img: "ASSETS/img/uru1.jpeg", prix: "99,99€", competition: "Copa America 2024" },
+        { nom: "Colombie Domicile Copa America 2024", img: "ASSETS/img/colombie1.jpeg", prix: "99,99€", competition: "Copa America 2024" }
+    ];
+
+    function afficherSelection() {
+        const container = document.getElementById('selection-container');
+        container.innerHTML = selection.map((m, idx) =>
+            `<div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                <img src="${m.img}" alt="${m.nom}" class="w-full h-56 object-contain p-4 bg-gray-100">
+                <div class="p-4 flex-1 flex flex-col">
+                    <div class="font-bold text-gray-900 mb-2">${m.nom}</div>
+                    <div class="text-xs mb-2"><span class="px-2 py-1 rounded bg-gray-200">${m.competition}</span></div>
+                    <div class="text-blue-600 font-bold mb-4">${m.prix}</div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full add-to-cart mt-auto" data-idx="${idx}">Ajouter au panier</button>
+                </div>
+            </div>`
+        ).join('');
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.onclick = function() {
+                const idx = this.getAttribute('data-idx');
+                const produit = selection[idx];
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const exist = cart.find(item => item.nom === produit.nom);
+                if (exist) {
+                    exist.qty = (exist.qty || 1) + 1;
+                } else {
+                    cart.push({ ...produit, qty: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                // Feedback visuel
+                this.textContent = "Ajouté !";
+                this.disabled = true;
+                setTimeout(() => {
+                    this.textContent = "Ajouter au panier";
+                    this.disabled = false;
+                }, 1200);
+            }
+        });
+    }
+
+    afficherSelection();
+    </script>
+</body>
+</html>

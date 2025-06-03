@@ -26,13 +26,11 @@
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <button class="text-gray-700 hover:text-blue-600">
-                        <i class="fas fa-user"></i>
-                    </button>
-                    <button class="text-gray-700 hover:text-blue-600 relative">
+                    <div id="user-nav" class="relative"></div>
+                    <a href="panier.html" class="text-gray-700 hover:text-blue-600 relative" title="Voir le panier">
                         <i class="fas fa-shopping-bag"></i>
-                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
-                    </button>
+                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </a>
                     <button class="md:hidden text-gray-700">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -48,11 +46,11 @@
             <!-- Sélecteur de ligue -->
             <div class="flex justify-center mb-8">
                 <select id="ligue-select" class="border border-gray-300 rounded px-4 py-2">
-                    <option value="ligue1">Ligue 1</option>
                     <option value="premierleague">Premier League</option>
-                    <option value="seriea">Serie A</option>
-                    <option value="laliga">La Liga</option>
+                    <option value="liga">La Liga</option>
                     <option value="bundesliga">Bundesliga</option>
+                    <option value="ligue1">Ligue 1</option>
+                    <option value="seriea">Serie A</option>
                 </select>
             </div>
 
@@ -73,35 +71,35 @@
                     <div class="p-4 text-center font-bold text-gray-900">Olympique de Marseille</div>
                 </a>
                 <a href="club.html?club=ol" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/lyon.png" alt="PSG" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Olympique Lyonnais</div>
                 </a>
                 <a href="club.html?club=asse" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/asse.png" alt="OM" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">AS Saint-Etienne</div>
                 </a>
                 <a href="club.html?club=nantes" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/nantes.png" alt="PSG" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Nantes F.C</div>
                 </a>
                 <a href="club.html?club=tfc" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/tfc.png" alt="OM" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Toulouse F.C</div>
                 </a>
                 <a href="club.html?club=lille" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/lille.png" alt="PSG" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Lille</div>
                 </a>
                 <a href="club.html?club=montpellier" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/montpellier.png" alt="OM" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Montpellier</div>
                 </a>
                 <a href="club.html?club=asm" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/psg.png" alt="PSG" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/asm.jpeg" alt="PSG" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">AS Monaco</div>
                 </a>
                 <a href="club.html?club=stras" data-ligue="ligue1" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block">
-                    <img src="ASSETS/img/om.png" alt="OM" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/strasbourg.jpeg" alt="OM" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Strasbourg</div>
                 </a>
 
@@ -111,28 +109,114 @@
                     <div class="p-4 text-center font-bold text-gray-900">Arsenal</div>
                 </a>
                 <a href="club.html?club=chelsea" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/chelsea.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Chelsea</div>
                 </a>
                 <a href="club.html?club=mancity" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/man city.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Manchesster City</div>
                 </a>
                 <a href="club.html?club=manu" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/man united.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Manchester United</div>
                 </a>
                 <a href="club.html?club=liverpool" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/liverpool.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Liverpool F.C</div>
                 </a>
                 <a href="club.html?club=avl" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/aston villa.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Aston Villa</div>
                 </a>
                 <a href="club.html?club=spurs" data-ligue="premierleague" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Chelsea_FC.svg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <img src="ASSETS/img/Tottenham.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
                     <div class="p-4 text-center font-bold text-gray-900">Tothenam</div>
+                </a>
+
+                <!-- Clubs La liga -->
+                <a href="club.html?club=atletico" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/at madrid.jpeg" alt="Arsenal" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Atletico Madrid</div>
+                </a>
+                <a href="club.html?club=bilbao" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/bilbao.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Athletic Bilbao</div>
+                </a>
+                <a href="club.html?club=barca" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/barca.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">FC Barcelone</div>
+                </a>
+                <a href="club.html?club=madrid" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/real.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Real Madrid</div>
+                </a>
+                <a href="club.html?club=villareal" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/villareal.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Villareal</div>
+                </a>
+                <a href="club.html?club=betis" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/betis.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Real Betis</div>
+                </a>
+                <a href="club.html?club=getafe" data-ligue="liga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/getafe.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Getafe</div>
+                </a>
+
+                <!-- Clubs seriea -->
+                <a href="club.html?club=asrome" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/roma.jpeg" alt="Arsenal" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">AS Rome</div>
+                </a>
+                <a href="club.html?club=atalanta" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/atalanta.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Atalanta Bergame</div>
+                </a>
+                <a href="club.html?club=napoli" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/napoli.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Napoli</div>
+                </a>
+                <a href="club.html?club=milan" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/milan.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">AC Milan</div>
+                </a>
+                <a href="club.html?club=inter" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/inter.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Inter Milan</div>
+                </a>
+                <a href="club.html?club=juve" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/juve.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Juventus</div>
+                </a>
+                <a href="club.html?club=lazio" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/lazio.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Lazio Rome</div>
+                </a>
+
+                <!-- Clubs bundesliga -->
+                <a href="club.html?club=atalanta" data-ligue="bundesliga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/atalanta.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Atalanta Bergame</div>
+                </a>
+                <a href="club.html?club=napoli" data-ligue="bundesliga" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/napoli.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Napoli</div>
+                </a>
+                <a href="club.html?club=milan" data-ligue="bund" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/milan.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">AC Milan</div>
+                </a>
+                <a href="club.html?club=inter" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/inter.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Inter Milan</div>
+                </a>
+                <a href="club.html?club=juve" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/juve.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Juventus</div>
+                </a>
+                <a href="club.html?club=lazio" data-ligue="seriea" class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 block hidden">
+                    <img src="ASSETS/img/lazio.jpeg" alt="Chelsea" class="w-full h-40 object-contain p-6">
+                    <div class="p-4 text-center font-bold text-gray-900">Lazio Rome</div>
                 </a>
                 <!-- Ajoute d'autres clubs pour chaque ligue -->
             </div>
